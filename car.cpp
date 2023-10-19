@@ -4,8 +4,9 @@
 #include "car.hpp"
 #include <cstddef>
 #include <cstring>
+#include <iostream>
 // #include .......
-
+using namespace std;
 Car::Car(){
 	manufacturer=model=0;
 	zeroToSixtyNs=0;
@@ -19,9 +20,9 @@ Car::~Car(){
 	delete model;
 }
 Car::Car(char const* const manufacturerName, char const* const modelName, PerformanceStats perf, uint8_t numSeats, DoorKind backseatDoorDesign){
-	manufacturer=new char[100];
+	if(manufacturer==0) manufacturer=new char[100];
+	if(model==0) model=new char[100];
 	strcpy(manufacturer,manufacturerName);
-	model=new char[100];
 	strcpy(model,modelName);
 	headonDragCoeff=perf.headonDragCoeff;
 	horsepower=perf.horsepower;
@@ -30,17 +31,21 @@ Car::Car(char const* const manufacturerName, char const* const modelName, Perfor
 	seatCount=numSeats;
 }
 Car::Car(Car const& o){
-	manufacturer=o.manufacturer;
-	model=o.model;
+	if(manufacturer==0) manufacturer=new char[100];
+	if(model==0) model=new char[100];
+	strcpy(manufacturer,o.manufacturer);
+	strcpy(model,o.model);
 	zeroToSixtyNs=o.zeroToSixtyNs;
 	headonDragCoeff=o.headonDragCoeff;
 	horsepower=o.horsepower;
 	backseatDoors=o.backseatDoors;
 	seatCount=o.seatCount;
 }
-Car& Car::operator=(Car const& o){	
-	manufacturer=o.manufacturer;
-	model=o.model;
+Car& Car::operator=(Car const& o){
+	if(manufacturer==0) manufacturer=new char[100];
+	if(model==0) model=new char[100];
+	strcpy(manufacturer,o.manufacturer);
+	strcpy(model,o.model);
 	zeroToSixtyNs=o.zeroToSixtyNs;
 	headonDragCoeff=o.headonDragCoeff;
 	horsepower=o.horsepower;
@@ -64,9 +69,11 @@ DoorKind Car::getBackseatDoors() const{
 	return backseatDoors;
 }
 void Car::manufacturerChange(char const* const newManufacturer){
+	if(manufacturer==0) manufacturer=new char[100];
 	strcpy(manufacturer,newManufacturer);
 }
 void Car::modelNameChange(char const* const newModelName){
+	if(model==0) model=new char[100];
 	strcpy(model,newModelName);
 }
 void Car::reevaluateStats(PerformanceStats newStats){
@@ -81,5 +88,10 @@ void Car::reexamineDoors(DoorKind newDoorKind){
 	backseatDoors=newDoorKind;
 }
 int main(){
-	Car c;
+	/*Car c;
+	c.manufacturerChange("123");
+	c.modelNameChange("1234");
+	Car c2;
+	c2=c;
+	cout<<c.getModel()<<" "<<c2.getModel()<<"\n";*/
 }
