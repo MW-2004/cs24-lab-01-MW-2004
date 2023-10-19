@@ -31,8 +31,8 @@ Car::Car(char const* const manufacturerName, char const* const modelName, Perfor
 	seatCount=numSeats;
 }
 Car::Car(Car const& o){
-	if(manufacturer==0) manufacturer=new char[100];
-	if(model==0) model=new char[100];
+	manufacturer=new char[100];
+	model=new char[100];
 	strcpy(manufacturer,o.manufacturer);
 	strcpy(model,o.model);
 	zeroToSixtyNs=o.zeroToSixtyNs;
@@ -88,10 +88,12 @@ void Car::reexamineDoors(DoorKind newDoorKind){
 	backseatDoors=newDoorKind;
 }
 int main(){
-	/*Car c;
+	Car c;
 	c.manufacturerChange("123");
 	c.modelNameChange("1234");
 	Car c2;
 	c2=c;
-	cout<<c.getModel()<<" "<<c2.getModel()<<"\n";*/
+	cout<<c.getModel()<<" "<<c2.getModel()<<"\n";
+	Car c3(c2);
+	cout<<c3.getManufacturer()<<'\n';
 }
