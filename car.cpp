@@ -8,20 +8,20 @@
 // #include .......
 using namespace std;
 Car::Car(){
-	manufacturer=model=0;
+	manufacturer=model=nullptr;
 	zeroToSixtyNs=0;
-	headonDragCoeff=0;
+	headonDragCoeff=0.0f;
 	horsepower=0;
 	backseatDoors=DoorKind::None;
 	seatCount=0;
 }
 Car::~Car(){
-	delete manufacturer;
-	delete model;
+	if(manufacturer) delete[] manufacturer;
+	if(model) delete[] model;
 }
 Car::Car(char const* const manufacturerName, char const* const modelName, PerformanceStats perf, uint8_t numSeats, DoorKind backseatDoorDesign){
-	if(manufacturer==0) manufacturer=new char[100];
-	if(model==0) model=new char[100];
+	manufacturer=new char[100];
+	model=new char[100];
 	strcpy(manufacturer,manufacturerName);
 	strcpy(model,modelName);
 	headonDragCoeff=perf.headonDragCoeff;
@@ -33,8 +33,8 @@ Car::Car(char const* const manufacturerName, char const* const modelName, Perfor
 Car::Car(Car const& o){
 	manufacturer=new char[100];
 	model=new char[100];
-	strcpy(manufacturer,o.manufacturer);
-	strcpy(model,o.model);
+	if(o.manufacturer) strcpy(manufacturer,o.manufacturer);
+	if(o.model) strcpy(model,o.model);
 	zeroToSixtyNs=o.zeroToSixtyNs;
 	headonDragCoeff=o.headonDragCoeff;
 	horsepower=o.horsepower;
@@ -44,8 +44,8 @@ Car::Car(Car const& o){
 Car& Car::operator=(Car const& o){
 	if(manufacturer==0) manufacturer=new char[100];
 	if(model==0) model=new char[100];
-	strcpy(manufacturer,o.manufacturer);
-	strcpy(model,o.model);
+	if(o.manufacturer) strcpy(manufacturer,o.manufacturer);
+	if(o.model) strcpy(model,o.model);
 	zeroToSixtyNs=o.zeroToSixtyNs;
 	headonDragCoeff=o.headonDragCoeff;
 	horsepower=o.horsepower;
@@ -87,7 +87,7 @@ void Car::recountSeats(uint8_t newSeatCount){
 void Car::reexamineDoors(DoorKind newDoorKind){
 	backseatDoors=newDoorKind;
 }
-int main(){
+/*int main(){
 	Car c;
 	c.manufacturerChange("123");
 	c.modelNameChange("1234");
@@ -96,4 +96,4 @@ int main(){
 	cout<<c.getModel()<<" "<<c2.getModel()<<"\n";
 	Car c3(c2);
 	cout<<c3.getManufacturer()<<'\n';
-}
+}*/
